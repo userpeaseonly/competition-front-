@@ -1,6 +1,8 @@
 // components/participants/ParticipantPhoto.tsx
 "use client";
 
+import Image from "next/image";
+
 interface ParticipantPhotoProps {
     image: string | null;
     name: string;
@@ -15,10 +17,12 @@ export default function ParticipantPhoto({
     return (
         <div className={`flex-shrink-0 ${className}`}>
             {image ? (
-                <img
-                    className="rounded-full object-cover h-full w-full"
+                <Image
                     src={image}
                     alt={name}
+                    width={200}
+                    height={200}
+                    className="rounded-lg"
                 />
             ) : (
                 <div className="rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center h-full w-full">

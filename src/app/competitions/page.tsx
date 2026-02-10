@@ -1,4 +1,4 @@
-// app/competitions/page.tsx
+// src/app/competitions/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -7,25 +7,34 @@ import { format } from "date-fns";
 import CompetitionModal from "@/components/competitions/CompetitionModal";
 import ActionButtons from "@/components/competitions/ActionButtons";
 import MainContent from "@/components/MainContent";
+import type { Competition } from "@/hooks/api/competitions";
 
 export default function CompetitionsPage() {
     const { data, isLoading, error } = useCompetitions();
     const { mutate: deleteComp } = useDeleteCompetition();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingComp, setEditingComp] = useState<Competition | undefined>(undefined);
+
+    const openNewModal = () => {
+        setEditingComp(undefined);
+        setIsModalOpen(true);
+    };
+
+    const openEditModal = (comp: Competition) => {
+        setEditingComp(comp);
+        setIsModalOpen(true);
+    };
 
     if (isLoading) return <LoadingSpinner />;
     if (error) return <ErrorAlert message={error.message} />;
 
     return (
-
         <MainContent>
             <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
-                        Competitions
-                    </h1>
+                    <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Competitions</h1>
                     <button
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={openNewModal}
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
                         + New Competition
@@ -35,6 +44,7 @@ export default function CompetitionsPage() {
                 <CompetitionModal
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
+                    initialData={editingComp}
                 />
 
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
@@ -51,13 +61,11 @@ export default function CompetitionsPage() {
                             {data?.map((comp) => (
                                 <tr key={comp.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                     <TableCell>{comp.name}</TableCell>
-                                    <TableCell>
-                                        {format(new Date(comp.start_date), "MMM dd, yyyy")}
-                                    </TableCell>
+                                    <TableCell>{format(new Date(comp.start_date), "MMM dd, yyyy")}</TableCell>
                                     <TableCell>{comp.location}</TableCell>
                                     <TableCell align="right">
                                         <ActionButtons
-                                            onEdit={() => setIsModalOpen(true)}
+                                            onEdit={() => openEditModal(comp)}
                                             onDelete={() => deleteComp(comp.id)}
                                         />
                                     </TableCell>
@@ -71,7 +79,6 @@ export default function CompetitionsPage() {
     );
 }
 
-// Reusable components (put in separate files)
 const LoadingSpinner = () => <div>Loading...</div>;
 const ErrorAlert = ({ message }: { message: string }) => (
     <div className="text-red-500">{message}</div>
