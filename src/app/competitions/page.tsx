@@ -58,7 +58,7 @@ export default function CompetitionsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                            {data?.map((comp) => (
+                            {data?.filter(Boolean).map((comp) => (
                                 <tr key={comp.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                     <TableCell>{comp.name}</TableCell>
                                     <TableCell>{format(new Date(comp.start_date), "MMM dd, yyyy")}</TableCell>

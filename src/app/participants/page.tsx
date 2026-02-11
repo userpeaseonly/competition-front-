@@ -52,7 +52,7 @@ export default function ParticipantsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-                            {data?.map((participant) => (
+                            {data?.filter(Boolean).map((participant) => (
                                 <tr key={participant.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                     <TableCell>
                                         <ParticipantPhoto image={participant.image} name={participant.name} />

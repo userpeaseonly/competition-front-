@@ -38,7 +38,7 @@ export interface FinalParticipant {
 export interface FinalPair {
     id: number;
     participant1: FinalParticipant;
-    participant2: FinalParticipant;
+    participant2: FinalParticipant | null;
     competition: {
         id: number;
         name: string;
@@ -60,7 +60,7 @@ export interface FinalPair {
 export interface CreateFinalPairDto {
     stage: 'final' | 'half-final' | 'quarter-final';
     participant1: number;
-    participant2: number;
+    participant2: number | null;
     competition: number;
     tournament: number;
     winner?: number | null;

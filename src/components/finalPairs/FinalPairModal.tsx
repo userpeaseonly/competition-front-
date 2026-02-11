@@ -30,7 +30,7 @@ export default function FinalPairModal({
     const [formData, setFormData] = useState({
         stage: finalPair?.stage || 'quarter-final',
         participant1: finalPair?.participant1.id || "",
-        participant2: finalPair?.participant2.id || "",
+        participant2: finalPair?.participant2?.id || "",
         competition: finalPair?.competition.id || "",
         tournament: finalPair?.tournament.id || "",
     });
@@ -40,7 +40,7 @@ export default function FinalPairModal({
         const data = {
             stage: formData.stage as 'final' | 'half-final' | 'quarter-final',
             participant1: Number(formData.participant1),
-            participant2: Number(formData.participant2),
+            participant2: formData.participant2 ? Number(formData.participant2) : null,
             competition: Number(formData.competition),
             tournament: Number(formData.tournament),
         };
@@ -125,15 +125,14 @@ export default function FinalPairModal({
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Participant 2
+                                Participant 2 (Optional)
                             </label>
                             <select
                                 value={formData.participant2}
                                 onChange={(e) => setFormData({ ...formData, participant2: e.target.value })}
                                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                                required
                             >
-                                <option value="">Select Participant</option>
+                                <option value="">Select Participant (Optional)</option>
                                 {finalParticipants?.map((fp) => (
                                     <option key={fp.id} value={fp.id}>
                                         {fp.participant.name} ({fp.participant.age}y, {fp.participant.weight}kg)

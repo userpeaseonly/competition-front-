@@ -26,7 +26,7 @@ export default function TournamentsPage() {
 
                 <div className="mt-6 flow-root">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {data?.map((tournament) => (
+                        {data?.filter(Boolean).map((tournament) => (
                             <TournamentCard
                                 key={tournament.id}
                                 tournament={tournament}

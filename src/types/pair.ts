@@ -29,7 +29,7 @@ export interface Tournament {
 export interface Pair {
     id: number;
     participant1: Participant;
-    participant2: Participant;
+    participant2: Participant | null;
     competition: {
         id: number;
         name: string;

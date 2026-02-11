@@ -176,11 +176,11 @@ export default function PairsPage() {
 
                 {/* Pairs List */}
                 <div className="space-y-4">
-                    {data?.map((pair) => (
+                    {data?.filter(Boolean).map((pair) => (
                         <div
                             key={pair.id}
                             className={`bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border-l-4 pb-5 ${pair.winner === pair.participant1.id ? 'border-green-500' :
-                                pair.winner === pair.participant2.id ? 'border-green-500' :
+                                pair.participant2 && pair.winner === pair.participant2.id ? 'border-green-500' :
                                     'border-gray-200 dark:border-gray-700'
                                 }`}
                         >
@@ -192,7 +192,7 @@ export default function PairsPage() {
                                     </span>
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className={`grid gap-4 ${pair.participant2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
                                     {/* Participant 1 */}
                                     <div className={`p-3 rounded-lg ${pair.winner === pair.participant1.id ? 'bg-green-50 dark:bg-green-900/30' : 'bg-gray-50 dark:bg-gray-700'
                                         }`}>
@@ -215,24 +215,26 @@ export default function PairsPage() {
                                     </div>
 
                                     {/* Participant 2 */}
-                                    <div className={`p-3 rounded-lg ${pair.winner === pair.participant2.id ? 'bg-green-50 dark:bg-green-900/30' : 'bg-gray-50 dark:bg-gray-700'
-                                        }`}>
-                                        <div className="flex items-center space-x-3">
-                                            <ParticipantPhoto image={pair.participant2.image} name={pair.participant2.name} />
-                                            <div>
-                                                <p className="font-medium">{pair.participant2.name}</p>
-                                                <div className="flex items-center space-x-2 text-sm">
-                                                    <GenderBadge gender={pair.participant2.gender} />
-                                                    <span>{pair.participant2.age}y • {pair.participant2.weight}kg</span>
+                                    {pair.participant2 && (
+                                        <div className={`p-3 rounded-lg ${pair.winner === pair.participant2.id ? 'bg-green-50 dark:bg-green-900/30' : 'bg-gray-50 dark:bg-gray-700'
+                                            }`}>
+                                            <div className="flex items-center space-x-3">
+                                                <ParticipantPhoto image={pair.participant2.image} name={pair.participant2.name} />
+                                                <div>
+                                                    <p className="font-medium">{pair.participant2.name}</p>
+                                                    <div className="flex items-center space-x-2 text-sm">
+                                                        <GenderBadge gender={pair.participant2.gender} />
+                                                        <span>{pair.participant2.age}y • {pair.participant2.weight}kg</span>
+                                                    </div>
+                                                    {pair.winner === pair.participant2.id && (
+                                                        <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                                            Winner
+                                                        </span>
+                                                    )}
                                                 </div>
-                                                {pair.winner === pair.participant2.id && (
-                                                    <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                                        Winner
-                                                    </span>
-                                                )}
                                             </div>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
                             <WinnerSelection
